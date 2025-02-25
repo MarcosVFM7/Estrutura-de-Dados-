@@ -1,0 +1,1 @@
+nome do executável: lista_encadeada
