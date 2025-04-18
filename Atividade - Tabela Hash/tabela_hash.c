@@ -22,7 +22,7 @@ typedef struct TabelaHash {
 } TabelaHash;
 
 // Função Hash 1 (Primeiro Nível)
-int hash1(char *chave, int n) {
+int hash1(char *chave) {
     unsigned long hash = 5381;
     int c;
     while ((c = *chave++)) {
@@ -57,7 +57,7 @@ TabelaHash* criarTabelaHash(int n) {
 
 // Insere um objeto na tabela hash
 void inserir(TabelaHash *th, char *chave, int valor) {
-    int pos1 = hash1(chave, th->n);
+    int pos1 = hash1(chave);
     int pos2 = hash2(chave, th->tabelas[pos1]->tamanho);
 
     Objeto *novo = (Objeto*)malloc(sizeof(Objeto));
@@ -65,7 +65,7 @@ void inserir(TabelaHash *th, char *chave, int valor) {
     novo->valor = valor;
     novo->prox = NULL;
 
-    // Inserção no início da lista encadeada
+    // Inserção no fim da lista encadeada
     if (th->tabelas[pos1]->lista[pos2] == NULL) {
         th->tabelas[pos1]->lista[pos2] = novo;
     } else {
@@ -79,7 +79,7 @@ void inserir(TabelaHash *th, char *chave, int valor) {
 
 // Busca um objeto na tabela hash
 Objeto* buscar(TabelaHash *th, char *chave) {
-    int pos1 = hash1(chave, th->n);
+    int pos1 = hash1(chave);
     int pos2 = hash2(chave, th->tabelas[pos1]->tamanho);
 
     Objeto *atual = th->tabelas[pos1]->lista[pos2];
@@ -112,7 +112,7 @@ void destruirTabelaHash(TabelaHash *th) {
 int main() {
     TabelaHash *th = criarTabelaHash(100);
 
-    // Inserções iniciais baseadas no enuciado
+    // Teste de inserções (Baseado no enunciado da atividade)
     inserir(th, "Joao", 10);
     inserir(th, "Marco", 20);
     inserir(th, "Marina", 30);
@@ -120,7 +120,7 @@ int main() {
     inserir(th, "Antonio", 50);
     inserir(th, "Jose", 60);
 
-    // Busca automática por "Marina" (exemplo inicial)
+    // Teste de busca por "Marina" (exemplo)
     Objeto *obj = buscar(th, "Marina");
     if (obj != NULL) {
         printf("\nChave: %s, Valor: %d\n", obj->chave, obj->valor);
